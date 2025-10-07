@@ -1,35 +1,34 @@
 import Category from "@components/ecommerce/Category/category";
 import { Col, Container, Row } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { thunkGetCategories } from "@store/categories/categoriesSlice";
+import { useEffect } from "react";
 
-export default function Categories() {
+
+const Categories = () => {
+    const dispatch = useAppDispatch();
+    const { records, loading, error } = useAppSelector((state) => state.categories);
+
+
+    useEffect(() => {
+        dispatch(thunkGetCategories());
+    }, [dispatch]);
+
+    const categoriesList = records.length > 0 ? records.map((record) => 
+    
+        <Col xs={3} key={record.id} className="d-flex justify-content-center mb-5 mt-2">
+            <Category {...record} />
+        </Col>
+      ) : "No categories found" ;
+
+
+
     return (
         <Container>
-            <Row>
-                <Col xs={3} className="d-flex justify-content-center mb-5 mt-2">
-                    <Category />
-                </Col>
-
-                <Col xs={3} className="d-flex justify-content-center mb-5 mt-2">
-                    <Category />
-                </Col>
-
-                <Col xs={3} className="d-flex justify-content-center mb-5 mt-2">
-                    <Category />
-                </Col>
-
-                <Col xs={3} className="d-flex justify-content-center mb-5 mt-2">
-                    <Category />
-                </Col>
-
-                <Col xs={3} className="d-flex justify-content-center mb-5 mt-2">
-                    <Category />
-                </Col>
-
-                <Col xs={3} className="d-flex justify-content-center mb-5 mt-2">
-                    <Category />
-                </Col>
-            </Row>
+            <Row>{categoriesList}</Row> 
         </Container>
-
     )
 }
+
+
+export default Categories;
