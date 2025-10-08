@@ -11,8 +11,10 @@ const Categories = () => {
 
 
     useEffect(() => {
+        if(!records.length){
         dispatch(thunkGetCategories());
-    }, [dispatch]);
+        }
+    }, [dispatch , records]);
 
     const categoriesList = records.length > 0 ? records.map((record) => 
     
