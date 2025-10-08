@@ -12,7 +12,7 @@ export default function Category({id, title, prefix, img}: IProps) {
     return (
         <div >
             <Link to={`/categories/products/${prefix}`}>
-            <img src={img} alt="photo" className="w-100" height={150} style={{ borderRadius: 100}}  />
+            <img src={img} alt="photo" className= "w-100"  style={{ borderRadius: 100 ,width: 200 ,height: 150}}  />
             <h1 className="text-center mt-2 fs-5">{title}</h1>
             </Link>
         </div>
