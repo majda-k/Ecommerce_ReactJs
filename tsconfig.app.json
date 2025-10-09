@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@*": ["src/*"],
       "@assets/*": ["src/assets/*"],
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
@@ -9,9 +10,8 @@
       "@utils/*": ["src/utils/*"],
       "@hooks/*": ["src/hooks/*"],
       "@store/*": ["src/store/*"],
-      "@types/*": ["src/types/*"],
-      "@services/*": ["src/services/*"],
-      "@*": ["src/*"]
+      "@services/*": ["src/services/*"]
+      
     },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",

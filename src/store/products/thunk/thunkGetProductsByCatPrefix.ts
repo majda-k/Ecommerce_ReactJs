@@ -1,13 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import type { TProduct } from "@/types/Product";
 
-type TResponse = {id : number, title : string, prefix : string, img : string , price:string , cat_prefix:string }[];
+type TResponse = TProduct[];
 
 const thunkGetProducts = createAsyncThunk(
     "products/thunkGetProductsByCatPrefix",
     async (prefix:string, thunkAPI) => {
         try {
-            const response = await axios.get<TResponse>(`http://localhost:5005/products?cat_prefix=${prefix}`)
+            const response = await axios.get<TResponse>(`/products?cat_prefix=${prefix}`)
             console.log(response.data)
             return response.data
         }catch(error){
