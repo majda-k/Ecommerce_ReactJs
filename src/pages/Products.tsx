@@ -7,12 +7,20 @@ import thunkGetProductsByCatPrefix from "@store/products/thunk/thunkGetProductsB
 import { useParams } from "react-router-dom";
 import Product from "@components/ecommerce/Product/product";
 import { cleanUpProducts } from "@store/products/productsSlice";
+import GridList from "@components/common/GridList/GridList";
+import type { TProduct } from "../types/Product";
+
+
 
 
 const Products = () => {
     const params = useParams();
     const dispatch = useAppDispatch();
+
+
     const { records, loading, error } = useAppSelector((state) => state.products);
+    const cartItems = useAppSelector((state) => state.cart.items);
+    const productFullInfo = records.map((el => ({ ...el, quantity: cartItems[el.id] })));
 
     useEffect(() => {
 
@@ -27,18 +35,12 @@ const Products = () => {
 
 
 
-    const productsList = records.length > 0 ? records.map((record) =>
-
-        <Col xs={3} key={record.id} className="d-flex justify-content-center mb-5 mt-2">
-            <Product {...record} />
-        </Col>
-    ) : "No products found";
-
-
-
     return (
         <Container>
-            <Row>{productsList}</Row>
+            <div className="d-flex justify-content-center align-items-center mb-5 ">
+                <h1><span>{params.prefix} <span>Products</span></span></h1>
+            </div>
+            <GridList<TProduct> records={productFullInfo} gridItem={(record) => <Product {...record} />} />
         </Container>
     )
 }
