@@ -9,7 +9,8 @@ import Login from '@pages/Login';
 import Register from '@pages/Register';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Error from '@pages/Error';
-
+import Cart from "@pages/Cart";
+import WishList from "@pages/wishList";
 
 
 const router = createBrowserRouter([
@@ -54,6 +55,14 @@ const router = createBrowserRouter([
             {
                 path: 'register',
                 element: <Register />
+            },
+            {
+                path: 'cart',
+                element: <Cart />
+            },
+            {
+                path: 'wishList',
+                element: <WishList />
             }
         ]
     },

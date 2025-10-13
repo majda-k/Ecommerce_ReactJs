@@ -16,8 +16,8 @@
 .Bascketquantity {
     position: absolute;
     border-radius: 40%;
-    top: -15px;
-    right: 60px;
+    top: -20px;
+    right: 95px;
     background-color: #0dcaf0d4;
     color: black;
     border-radius: 50%;
@@ -26,7 +26,6 @@
     align-self: flex-end;
     border: 1px solid black;
     margin-top: 5px;
-
 }
 
 .BasketCartPumping {
@@ -48,7 +47,7 @@ animation : pumping  300ms infinite;
     }
 }
 
-.headerBascket {
+.headerWishList {
     font-size: 18px;
     margin-top: 5px;
     margin-left: 5px;
@@ -58,9 +57,10 @@ animation : pumping  300ms infinite;
     letter-spacing: 1px;
 }
 
-.headerBasketImg {
-    width: 25px;
+.headerWishListImg {
+    width: 40px;
     height: 30px;
-    margin-top: 3px;
-  margin-right: 0px;
+    margin-top: 5px;
+  margin-right: -10px;
+ 
 }

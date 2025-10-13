@@ -1,0 +1,27 @@
+.productContainer {
+    position: relative;
+    width: 130px;
+    height: 200px;
+
+}
+
+.productImg {
+    width: 130px;
+    height: 100%;
+    object-fit: cover;
+}
+
+.WisheListContainer {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    padding: 1px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.WisheListContainer:hover {
+    background-color: #ecebeb;
+    color: #fff;
+}
+

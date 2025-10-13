@@ -5,6 +5,7 @@ import cart from './cart/cartSlice'
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PERSIST, PURGE, REGISTER, REHYDRATE, FLUSH, PAUSE } from "redux-persist";
+import wishList from './wishLIst/wishListSlice';
 
 
 // const persistConfig = {
@@ -17,11 +18,19 @@ const cartPersistConfig = {
   storage,
   whiteList: ["items"],
 }
+
+
+  const wishListPersistConfig = {
+    key: "wishList",
+  storage,
+  whiteList: ["itemsId"],
+}
 export const rootReducer = combineReducers({
 
   categories,
   products,
   cart: persistReducer(cartPersistConfig, cart),
+  wishList: persistReducer(wishListPersistConfig, wishList),
 });
 
 

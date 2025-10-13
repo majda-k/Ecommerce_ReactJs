@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import thunkGetProducts from "./thunk/thunkGetProductsByCatPrefix";
+import type { TProduct } from "@/types/Product";
 
 
 
 interface Products {
-    records : {id : number , title:string, img:string , price:string , cat_prefix:string}[],
+    records : TProduct[],
     loading : "idle" | "pending" | "succeeded" | "failed",
     error : string | null,
 }
@@ -19,7 +20,6 @@ const ProductsSlice = createSlice({
     name : "products",
     initialState ,
     reducers : {
-
         cleanUpProducts : (state) => {
             state.records=[];
         }
@@ -31,7 +31,7 @@ const ProductsSlice = createSlice({
         });
         builder.addCase(thunkGetProducts.fulfilled, (state, action) => {
             state.loading = "succeeded";
-            state.records = action.payload;
+            state.records = action.payload ;
         });
         builder.addCase(thunkGetProducts.rejected, (state, action) => {
             state.loading = "failed";
