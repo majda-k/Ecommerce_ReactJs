@@ -5,7 +5,7 @@ export default function Footer() {
     return (
        
       <div className={footerContainer}>
-        <p>Copyright © 2025 Our Ecommerce. All rights reserved.</p>
+        <p>Copyright © 2025 Our eCom. All rights reserved.</p>
       </div>
     )
 }

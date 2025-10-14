@@ -14,7 +14,7 @@ export default function Header() {
     return (
         <header >
             <div className={headerContainer}>
-                <h1 className={headerLogo} >Our <Badge bg="info">Ecom</Badge></h1>
+                <h1 className={headerLogo} >Our <Badge bg="info">eCom</Badge></h1>
 
                 <div className={HeaderWishListContainer}>
                 <HeaderWishList />

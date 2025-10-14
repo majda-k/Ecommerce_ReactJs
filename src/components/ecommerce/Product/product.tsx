@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { addToCart } from "@store/cart/cartSlice";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { Spinner } from "react-bootstrap";
 import type { TProduct } from "@/types/Product";
 import Like from "@assets/LIke.svg";
@@ -24,7 +24,7 @@ interface IProps {
 
 }
 
-export default function Product({ id, title, price, img, cat_prefix, max, quantity , isLiked }: TProduct ) {
+export default memo(function Product ({ id, title, price, img, cat_prefix, max, quantity , isLiked }: TProduct ) {
 
 
     const dispatch = useAppDispatch();
@@ -85,4 +85,4 @@ export default function Product({ id, title, price, img, cat_prefix, max, quanti
             <Button className="btn-primary" onClick={handleClick} disabled={isBtnnDisabled} > {isBtnnDisabled ? <><Spinner animation="border" size="sm" />Loading ... </> : "Add to Cart"} </Button>
         </div>
     )
-}
+})

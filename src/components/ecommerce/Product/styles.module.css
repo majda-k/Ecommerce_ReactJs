@@ -2,6 +2,8 @@
     position: relative;
     width: 130px;
     height: 200px;
+    margin-bottom: 250px;
+    
 
 }
 
@@ -18,10 +20,12 @@
     padding: 1px;
     background-color: #fff;
     cursor: pointer;
+   
 }
 
 .WisheListContainer:hover {
     background-color: #ecebeb;
     color: #fff;
 }
+
 
