@@ -6,6 +6,7 @@ interface IProps {
     title: string;
     prefix: string;
     img: string;
+    
 }
 
 export default function Category({id, title, prefix, img}: IProps) {

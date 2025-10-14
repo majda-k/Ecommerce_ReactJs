@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import Category from "@components/ecommerce/Category/category";
+
 
  type GridListProps<T>={
     records : T[];
@@ -13,7 +13,7 @@ const GridList = <T extends hasId>({ records, gridItem }: GridListProps<T>) => {
    
         const categoriesList = records.length > 0 ? records.map((record) => 
 
-            <Col xs={3} key={record.id} className="d-flex justify-content-center mb-5 mt-2">
+            <Col xs={3} key={record.id} className="d-flex justify-content-center">
                 {gridItem(record)}
             </Col>
           ) : "No categories found";

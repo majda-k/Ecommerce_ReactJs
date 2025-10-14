@@ -1,16 +1,18 @@
-import { SlBasket } from "react-icons/sl";
+
 import styles from "./styles.module.css";
-import { useAppSelector } from "@store/hooks";
-import { getCartItemsSelector } from "@store/cart/selectors"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import wishList from "@assets/wishList.svg";
+import { useAppSelector } from "@store/hooks";
 
-export default function HeaderBascket() {
+export default function HeaderWishList() {
     const navigate = useNavigate();
     const [isAnimate, setIsAnimate] = useState(false);
-    const {BasketCartPumping , BascketContainer , Bascketquantity , headerBascket , headerBasketImg} = styles;
-    const totalQuantity = useAppSelector(getCartItemsSelector);
+        const {BasketCartPumping , BascketContainer , Bascketquantity , headerWishList , headerWishListImg} = styles;
+  
     const BascketQuantityClass = `${Bascketquantity} ${isAnimate ? BasketCartPumping : ""}`
+
+    const totalQuantity = useAppSelector((state) => state.wishList.itemsId);
 
     useEffect(() => {
         if (!totalQuantity) {
@@ -31,10 +33,12 @@ export default function HeaderBascket() {
     console.log("redering")
  
     return (
-        <div className={BascketContainer} onClick={() => navigate("/cart")}>
-            <SlBasket size={30} className={headerBasketImg} />
-            <div>{totalQuantity > 0 ? <div className={BascketQuantityClass}>{totalQuantity}</div> : null}</div>
-            <p className={headerBascket}>Cart</p>
+        <div className={BascketContainer} onClick={() => navigate("/wishList")}>
+           
+              <img src={wishList} alt="wishList" className={headerWishListImg} />
+            
+            <div>{totalQuantity.length > 0 ? <div className={BascketQuantityClass}>{totalQuantity.length}</div> : null}</div>
+            <p className={headerWishList}>WishList</p>
         </div>
     )
 }

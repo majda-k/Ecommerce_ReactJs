@@ -2,19 +2,26 @@ import { Badge, Container, Navbar, Nav } from "react-bootstrap";
 import styles from "./styles.module.css";
 import HeaderBascket from "../../ecommerce/HeaderBascket/HeaderBascket";
 import { NavLink } from "react-router-dom";
+import HeaderWishList from "@components/ecommerce/HeaderWishList/HeaderWishList";
+
 
 
 
 
 
 export default function Header() {
-    const { headerContainer, headerLogo } = styles;
+    const { headerContainer, headerLogo , HeaderWishListContainer} = styles;
     return (
         <header >
             <div className={headerContainer}>
-                <h1 className={headerLogo} >Our <Badge bg="info">Ecom</Badge></h1>
+                <h1 className={headerLogo} >Our <Badge bg="info">eCom</Badge></h1>
 
+                <div className={HeaderWishListContainer}>
+                <HeaderWishList />
+                |
                 <HeaderBascket />
+                </div>
+               
 
             </div>
 
