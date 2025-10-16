@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 const actLikeToggle = createAsyncThunk("/wisheList/actLikeToggle" , async(id:number, thunkAPI) => {
-    const {rejectWithValue} = thunkAPI;
+    const {rejectWithValue , signal} = thunkAPI;
    try{
     const isRecorsExist = await axios.get(`/wishList?userId=1&productId=${id}`);
 
@@ -12,7 +12,7 @@ const actLikeToggle = createAsyncThunk("/wisheList/actLikeToggle" , async(id:num
         await axios.delete(`/wishList/${deleteId}`);
         return {type:"remove" , id}
     }else {
-        await axios.post(`/wishList`, {userId: 1, productId: id});
+        await axios.post(`/wishList`, {userId: 1, productId: id}, {signal});
         return {type:"add" , id}
     }
 

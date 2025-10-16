@@ -14,8 +14,8 @@ export default function useWishLIst() {
     const wishListItems = useAppSelector((state) => state.wishList.itemsId);
 
 
-    useEffect(() => { dispatch(actGetWishList() ) ;
-        return () => { dispatch(productFullInfoCleanUp()); }; }, [dispatch]);       
+    useEffect(() => { const promise = dispatch(actGetWishList() ) ;
+        return () => { dispatch(productFullInfoCleanUp()); promise.abort(); }; }, [dispatch]);       
 
 
 

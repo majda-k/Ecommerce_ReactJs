@@ -9,7 +9,10 @@ export default function useCategories() {
 
     useEffect(() => {
         if(!records.length){
-        dispatch(thunkGetCategories());
+        const promise = dispatch(thunkGetCategories());
+        return () => {
+            promise.abort();
+        };
         }
     }, [dispatch , records]);
 

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import thunkGetProducts from "./thunk/thunkGetProductsByCatPrefix";
 import type { TProduct } from "@/types/Product";
+import { isString } from "../../types/guards";
 
 
 
@@ -35,7 +36,9 @@ const ProductsSlice = createSlice({
         });
         builder.addCase(thunkGetProducts.rejected, (state, action) => {
             state.loading = "failed";
-            state.error = action.payload as string; 
+            if(isString(action.payload)){
+            state.error = action.payload ;
+            }
         });
     }
 })

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import thunkGetCategories from "./thunk/thunkGetCategories";
+import { isString } from "../../types/guards";
 
 
 
@@ -33,7 +34,9 @@ const CategoriesSlice = createSlice({
         });
         builder.addCase(thunkGetCategories.rejected, (state, action) => {
             state.loading = "failed";
-            state.error = action.payload as string; 
+            if(isString(action.payload)){
+            state.error = action.payload ;
+            }
         });
     }
 })

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import actLikeToggle from "./act/actLikeToggle";
 import actGetWishList from "./act/actGetWishList";
 import type { TProduct } from "@/types/Product";
+import { isString } from "../../types/guards";
 
 
 
@@ -60,7 +61,9 @@ export const WishList = createSlice({
               
         builder.addCase(actGetWishList.rejected, (state , action) => {
             state.loading = "failed";
-            state.error = action.payload as string;
+            if(isString(action.payload)){
+            state.error = action.payload ;
+            }
         });
     
 }});

@@ -20,11 +20,17 @@ export default function useProducts() {
         let prefix: string;
         if (params.prefix && typeof params.prefix === 'string') {
             prefix = params.prefix;
-            dispatch(thunkGetProductsByCatPrefix(params.prefix as string));
+            const promise = dispatch(thunkGetProductsByCatPrefix(params.prefix as string));
+            return () => {
+                promise.abort();
+            };
         }
 
         return () => {
+          
             dispatch(cleanUpProducts());
+           
+
         };
     }, [dispatch, params]);
 
