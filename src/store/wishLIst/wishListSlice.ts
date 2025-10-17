@@ -11,6 +11,7 @@ interface WishList {
     loading: "idle" | "pending" | "succeeded" | "failed",
     error: string | null;
     productFullInfo: TProduct[];
+    hasLoaded: boolean;
 }
 
 
@@ -19,6 +20,7 @@ const initialState : WishList = {
     loading: "idle",
     error: null,
     productFullInfo: [],
+    hasLoaded: false,
 } 
 
 export const WishList = createSlice({
@@ -55,7 +57,8 @@ export const WishList = createSlice({
         builder.addCase(actGetWishList.fulfilled, (state, action) => {
             state.loading = "succeeded";
             state.productFullInfo = action.payload || [];
-            
+            state.itemsId = action.payload?.map(product => product.id) || [];
+           
         
         });
               

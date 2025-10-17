@@ -8,6 +8,7 @@ import useWishLIst from "@hooks/useWishLIst";
 
 
 
+
 export default function WishList() {
    
   
@@ -16,11 +17,14 @@ export default function WishList() {
 
 
     return (
-        <div className="wishList">
+        <div className="wishList"> 
             <h1> Your WishList</h1>
-            <div className="d-flex justify-content-center align-items-center">
+            <div >
+                <GridList records={records} gridItem={(record : TProduct) => <Product {...record} />} />
             </div>
-            <GridList<TProduct>  records={records} gridItem={(record) => <Product {...record} />}  />
+          
+            
+            
         </div>
     )
 }

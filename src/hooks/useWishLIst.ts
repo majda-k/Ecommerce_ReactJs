@@ -1,7 +1,7 @@
 
 import { productFullInfoCleanUp } from "@store/wishLIst/wishListSlice"; 
 import { useAppDispatch } from "@store/hooks";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import actGetWishList from "@store/wishLIst/act/actGetWishList";
 import { useAppSelector } from "@store/hooks";
 
@@ -13,10 +13,19 @@ export default function useWishLIst() {
     const cartItems = useAppSelector((state) => state.cart.items);
     const wishListItems = useAppSelector((state) => state.wishList.itemsId);
 
-
-    useEffect(() => { const promise = dispatch(actGetWishList() ) ;
-        return () => { dispatch(productFullInfoCleanUp()); promise.abort(); }; }, [dispatch]);       
-
+    const hasLoaded = useRef(false);
+    
+    useEffect(() => { 
+       
+        if (!hasLoaded.current && !wishListItems.length) {
+            const promise = dispatch(actGetWishList());
+            hasLoaded.current = true;
+            return () => { 
+                dispatch(productFullInfoCleanUp()); 
+                promise.abort(); 
+            };
+        }
+    }, [dispatch]);
 
 
     const records = productFullInfo?.map((el) => ({ 

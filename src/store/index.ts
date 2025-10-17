@@ -30,7 +30,7 @@ export const rootReducer = combineReducers({
   categories,
   products,
   cart: persistReducer(cartPersistConfig, cart),
-  wishList: persistReducer(wishListPersistConfig, wishList),
+  wishList,
 });
 
 

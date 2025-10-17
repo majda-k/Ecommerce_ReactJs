@@ -4,8 +4,10 @@ import MainLayout from '@layouts/MainLayout/MainLayout';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Error from '@pages/Error';
 import { lazy , Suspense } from "react";
-
-
+import CategorySkeleton from '@components/feedback/skeletons/CategorySkeleton/CategorySkeleton';
+import ProductSkeleton from '@components/feedback/skeletons/ProductSkeleton/ProductSkeleton';
+import CartSkeleton from '@components/feedback/skeletons/CartSkeleton/CartSkeleton';
+import LottieHandler from '@components/feedback/lottieHandler/lottieHandler';
 const Home = lazy(() => import('@pages/Home'));
 const Categories = lazy(() => import('@pages/Categories'));
 const Products = lazy(() => import('@pages/Products'));
@@ -15,25 +17,29 @@ const Register = lazy(() => import('@pages/Register'));
 const Cart = lazy(() => import('@pages/Cart'));
 const WishList = lazy(() => import('@pages/wishList'));
 
+
+
 const router = createBrowserRouter([
     {
         path: '/',
         errorElement: <Error />,
-        element: <Suspense fallback={<div>Loading , Please wait...</div>}><MainLayout /></Suspense>,
+        element: <Suspense fallback={
+            <ProductSkeleton/>
+        }><MainLayout /></Suspense>,
 
 
         children: [
             {
                 index: true,
-                element: <Suspense fallback={<div>Loading , Please wait...</div>}><Home /></Suspense>
+                element: <Suspense fallback={<LottieHandler type="loading" message="Loading , Please wait..." />}><Home /></Suspense>
             },
             {
                 path: 'categories',
-                element: <Suspense fallback={<div>Loading , Please wait...</div>}><Categories /></Suspense>
+                element: <Suspense fallback={<CategorySkeleton/>} ><Categories /></Suspense>
             },
             {
                 path: 'categories/products/:prefix',
-                element: <Suspense fallback={<div>Loading , Please wait...</div>}><Products /></Suspense>,
+                element: <Suspense fallback={<ProductSkeleton/>}><Products /></Suspense>,
                 loader: ({ params }) => {
                     if (typeof params.prefix === 'string' && !/^[a-z]+$/i.test(params.prefix)) {
 
@@ -48,23 +54,23 @@ const router = createBrowserRouter([
 
             {
                 path: 'about-us',
-                element: <Suspense fallback={<div>Loading , Please wait...</div>}><AboutUs /></Suspense>
+                element: <Suspense fallback={<LottieHandler type="loading" message="Loading , Please wait..." />}><AboutUs /></Suspense>
             },
             {
                 path: 'login',
-                element: <Suspense fallback={<div>Loading , Please wait...</div>}><Login /></Suspense>
+                element: <Suspense fallback={<LottieHandler type="loading" message="Loading , Please wait..." />}><Login /></Suspense>
             },
             {
                 path: 'register',
-                element: <Suspense fallback={<div>Loading , Please wait...</div>}><Register /></Suspense>
+                element: <Suspense fallback={<LottieHandler type="loading" message="Loading , Please wait..." />}><Register /></Suspense>
             },
             {
                 path: 'cart',
-                element: <Suspense fallback={<div>Loading , Please wait...</div>}><Cart /></Suspense>
+                element: <Suspense fallback={<CartSkeleton/>}><Cart /></Suspense>
             },
             {
                 path: 'wishList',
-                element: <Suspense fallback={<div>Loading , Please wait...</div>}><WishList /></Suspense>
+                element: <Suspense fallback={<ProductSkeleton/>}><WishList /></Suspense>
             }
         ]
     },

@@ -1,4 +1,5 @@
 import { Col, Row } from "react-bootstrap";
+import LottieHandler from "@components/feedback/lottieHandler/lottieHandler";
 
 
  type GridListProps<T>={
@@ -13,10 +14,10 @@ const GridList = <T extends hasId>({ records, gridItem }: GridListProps<T>) => {
    
         const categoriesList = records.length > 0 ? records.map((record) => 
 
-            <Col xs={3} key={record.id} className="d-flex justify-content-center">
+            <Col xs={3} key={record.id} className="d-flex justify-content-center mb-5">
                 {gridItem(record)}
             </Col>
-          ) : "No categories found";
+          ) : <LottieHandler type="empty" message="No categories found" />;
 
     return (
         <Row>{categoriesList}</Row>
