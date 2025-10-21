@@ -1,39 +1,40 @@
 import { useForm, type SubmitHandler } from "react-hook-form"
-
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, FormText, Row } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import { z } from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type TRegisterForm, zodSchema } from "@validations/schemaRegister";
+import useCheckEmailAvailability from "@hooks/UseCheckEmailAvailability";
 
-
-
-
-const zodSchema = z.object({
-    firstName: z.string().min(1, { message: "First Name is required" }),
-    lastName: z.string().min(1, { message: "Last Name is required" }),
-    email: z.string().email({ message: "Invalid email address" }).email(),
-    password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
-    confirmPassword: z.string().min(8, { message: "Password must be at least 8 characters long" }),
-}).refine((input) => input.password === input.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Passwords do not match",
-});
-
-
-type TRegisteForm = z.infer<typeof zodSchema>;
 
 
 
 export default function Register() {
-    const { register, handleSubmit, formState: { errors } } = useForm<TRegisteForm>({
+    const { register, handleSubmit, formState: { errors }, trigger, getFieldState } = useForm<TRegisterForm>({
         mode: "onBlur",
         resolver: zodResolver(zodSchema),
     });
 
-    const submitHandler: SubmitHandler<TRegisteForm> = (data: TRegisteForm) => {
+    const submitHandler: SubmitHandler<TRegisterForm> = (data: TRegisterForm) => {
         console.log(data);
     }
 
+    const { checkEmailAvailabilityStatus, enteredEmail, checkEmailAvailability, resetCheckEmailAvailability } = useCheckEmailAvailability();
+
+    const emailOnBlurHandler =
+        async (e: React.FocusEvent<HTMLInputElement>) => {
+            await trigger("email");
+            const value = e.target.value;
+            const { isDirty, invalid } = getFieldState("email")
+            if (isDirty && !invalid && enteredEmail !== value) {
+                checkEmailAvailability(value);
+
+            }
+
+            if (isDirty && !invalid && enteredEmail) {
+                resetCheckEmailAvailability();
+            };
+
+        };
 
     return (
         <>
@@ -41,33 +42,56 @@ export default function Register() {
 
             <Row>
                 <Col md={{ span: 6, offset: 3 }}>
-                    <Form onSubmit={handleSubmit(submitHandler)}>
+                    <Form onSubmit={handleSubmit(submitHandler)}  >
                         <Form.Group className="mb-3" >
                             <Form.Label>First Name</Form.Label>
-                            <Form.Control type="text" {...register("firstName")}  isInvalid={errors.firstName?.message ? true : false}/>
+                            <Form.Control type="text" {...register("firstName")} isInvalid={errors.firstName?.message ? true : false} />
                             <Form.Control.Feedback type="invalid">{errors.firstName?.message}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label>Last Name</Form.Label>
-                            <Form.Control type="text" {...register("lastName")}  isInvalid={errors.lastName?.message ? true : false}/>
+                            <Form.Control type="text" {...register("lastName")} isInvalid={errors.lastName?.message ? true : false} />
                             <Form.Control.Feedback type="invalid">{errors.lastName?.message}</Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group className="mb-3" >
+
+                        <Form.Group className="mb-3">
                             <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" {...register("email")}  isInvalid={errors.email?.message ? true : false}/>
-                            <Form.Control.Feedback type="invalid">{errors.email?.message}</Form.Control.Feedback>
+                            <Form.Control
+                                type="email"
+                                {...register("email")}
+                                isInvalid={errors.email?.message ? true : false || checkEmailAvailabilityStatus === "notAvailable"}
+                                isValid={checkEmailAvailabilityStatus === "available"}
+                                onBlur={emailOnBlurHandler}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.email?.message || (checkEmailAvailabilityStatus === "notAvailable" ? "Email is already in use" : "")}
+                            </Form.Control.Feedback>
+                            {checkEmailAvailabilityStatus === "available" && (
+                                <Form.Control.Feedback type="valid">Email is available</Form.Control.Feedback>
+
+                            )}
+                            {checkEmailAvailabilityStatus === "checking" && (
+                                <FormText>Checking email availability</FormText>
+                            )}
+                            {/* <details>
+                                <summary>Debug</summary>
+                                <pre>
+                                {checkEmailAvailabilityStatus}
+                                </pre>
+                            </details> */}
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" {...register("password")}  isInvalid={errors.password?.message ? true : false}/>
+                            <Form.Control type="password" {...register("password")} isInvalid={errors.password?.message ? true : false} />
                             <Form.Control.Feedback type="invalid">{errors.password?.message}</Form.Control.Feedback>
+
                         </Form.Group>
                         <Form.Group className="mb-3" >
                             <Form.Label>Confirm Password</Form.Label>
-                            <Form.Control type="password" {...register("confirmPassword")}  isInvalid={errors.confirmPassword?.message ? true : false}/>
+                            <Form.Control type="password" {...register("confirmPassword")} isInvalid={errors.confirmPassword?.message ? true : false} />
                             <Form.Control.Feedback type="invalid">{errors.confirmPassword?.message}</Form.Control.Feedback>
                         </Form.Group>
-                        <Button type="submit" variant="info" style={{ color: 'white' }}>Submit</Button>
+                        <Button type="submit" variant="info" style={{ color: 'white' }} disabled={checkEmailAvailabilityStatus === "checking" ? true : false}>Submit</Button>
                     </Form>
                 </Col>
             </Row>
