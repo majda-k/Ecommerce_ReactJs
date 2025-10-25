@@ -4,7 +4,7 @@ import loading from "@assets/lottiesFile/loading.json";
 import empty from "@assets/lottiesFile/empty.json";
 import error from "@assets/lottiesFile/error.json";
 import { Container } from "react-bootstrap";
-
+import success from "@assets/lottiesFile/success.json";
 type LottieHandlerProps = {
     type: keyof typeof lottieTypes;
     message?: string;
@@ -15,6 +15,7 @@ const lottieTypes = {
     loading,
     empty,
     error,
+    success,
 }
 
 export default function LottieHandler({ type, message }: LottieHandlerProps) {

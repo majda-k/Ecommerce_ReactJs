@@ -1,6 +1,7 @@
 import styles from "./styles.module.css";
 import { memo } from "react";
 import type { TProduct } from "@/types/Product";
+import ProductInfo from "@components/ProductInfo/ProductInfo";
 
 type cartItemProps = TProduct & {
     changeQuantityHandler : (id : number, quantity : number) => void,
@@ -25,20 +26,11 @@ export default memo( function CartItem ({id , title , img , price , max , quanti
     const { cartItemContainer, cartItemImg, cartItemTitle, cartItemPrice, cartItemRemove, cartItemQty } = styles;
     return (
         <>
-            <div className="d-flex flex-row">
-            <div className={cartItemContainer}>
-                <div>
-                    <img src={img} alt={title} className={cartItemImg} />
-                </div>
-
-                <div>
-                    <p className={cartItemTitle}>{title}</p>
-                    <p className={cartItemPrice}> {price} EGP</p>
-                    <button className={cartItemRemove} onClick={() => removeItemHandler(id)}>Remove</button>
-                </div>
-
-            </div>
-
+        <div className="d-flex flex-row justify-content-between p-2">
+                <ProductInfo title={title} price={price} img={img} direction="column" >
+                <button className={cartItemRemove} onClick={() => removeItemHandler(id)}>Remove</button>
+                </ProductInfo>
+                
 
             <div className="d-flex flex-column p-2">
                 <div>

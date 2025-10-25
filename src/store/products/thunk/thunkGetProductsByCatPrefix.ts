@@ -11,7 +11,7 @@ const thunkGetProducts = createAsyncThunk(
         const {signal} = thunkAPI;
         try {
             const response = await axios.get<TResponse>(`/products?cat_prefix=${prefix}`, {signal})
-            console.log(response.data)
+       
             return response.data
         }catch(error){
             return thunkAPI.rejectWithValue(axiosErrorHandler(error));

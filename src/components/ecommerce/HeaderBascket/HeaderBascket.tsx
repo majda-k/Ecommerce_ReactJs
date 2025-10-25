@@ -28,7 +28,7 @@ export default function HeaderBascket() {
     }, [totalQuantity]);
 
 
-    console.log("redering")
+   
  
     return (
         <div className={BascketContainer} onClick={() => navigate("/cart")}>

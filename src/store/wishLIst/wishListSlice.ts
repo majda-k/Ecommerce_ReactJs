@@ -3,7 +3,7 @@ import actLikeToggle from "./act/actLikeToggle";
 import actGetWishList from "./act/actGetWishList";
 import type { TProduct } from "@/types/Product";
 import { isString } from "../../types/guards";
-
+import { actAuthLogout } from "@store/auth/authSlice";
 
 
 interface WishList {
@@ -56,10 +56,11 @@ export const WishList = createSlice({
         });
         builder.addCase(actGetWishList.fulfilled, (state, action) => {
             state.loading = "succeeded";
-            state.productFullInfo = action.payload || [];
-            state.itemsId = action.payload?.map(product => product.id) || [];
-           
-        
+            if(action.payload.dataType === "ProductFullInfo" ){
+                state.productFullInfo= action.payload.data as TProduct[];
+            }else{
+                state.itemsId = action.payload.data as number[];
+            }
         });
               
         builder.addCase(actGetWishList.rejected, (state , action) => {
@@ -68,7 +69,10 @@ export const WishList = createSlice({
             state.error = action.payload ;
             }
         });
-    
+    builder.addCase(actAuthLogout, (state) => {
+        state.itemsId = [];
+        state.productFullInfo = [];
+    });
 }});
 
 
@@ -76,4 +80,4 @@ export const WishList = createSlice({
 
 
 export default WishList.reducer;
-export const { productFullInfoCleanUp } = WishList.actions;
+export const { productFullInfoCleanUp  } = WishList.actions;

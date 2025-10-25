@@ -13,8 +13,10 @@ export default function useProducts() {
     const { records, loading, error  } = useAppSelector((state) => state.products);
     const cartItems = useAppSelector((state) => state.cart.items);
     const wishListItems = useAppSelector((state) => state.wishList.itemsId);
-    const productFullInfo = records.map((el => ({ ...el, quantity: cartItems[el.id] || 0  , isLiked : wishListItems.includes(el.id) })));
-    console.log('productFullInfo info', productFullInfo);
+    const userAccessToken = useAppSelector((state) => state.auth.accessToken);
+    const productFullInfo = records.map((el => ({ ...el, quantity: cartItems[el.id] || 0  , isLiked : wishListItems.includes(el.id)  , isAuthenticated : userAccessToken ? true : false })));
+
+
 
     useEffect(() => {
         let prefix: string;

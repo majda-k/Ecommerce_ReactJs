@@ -30,14 +30,14 @@ export default function HeaderWishList() {
     }, [totalQuantity]);
 
 
-    console.log("redering")
+
  
     return (
         <div className={BascketContainer} onClick={() => navigate("/wishList")}>
            
               <img src={wishList} alt="wishList" className={headerWishListImg} />
             
-            <div>{totalQuantity.length > 0 ? <div className={BascketQuantityClass}>{totalQuantity.length}</div> : null}</div>
+            <div>{totalQuantity.length && totalQuantity.length !== 0 ? <div className={BascketQuantityClass}>{totalQuantity.length}</div> : null}</div>
             <p className={headerWishList}>WishList</p>
         </div>
     )

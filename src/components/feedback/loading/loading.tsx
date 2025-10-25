@@ -3,6 +3,7 @@ import CategorySkeleton from "../skeletons/CategorySkeleton/CategorySkeleton";
 import ProductSkeleton from "../skeletons/ProductSkeleton/ProductSkeleton";
 import CartSkeleton from "../skeletons/CartSkeleton/CartSkeleton";
 import LottieHandler from "../lottieHandler/lottieHandler";
+import TableSkeleton from "../skeletons/TableSkeleton/tableSkeleton";
 
 type LoadingProps = {
     children: React.ReactNode;
@@ -13,7 +14,8 @@ type LoadingProps = {
 const skeletonsTypes={
     prduct : ProductSkeleton,
     category : CategorySkeleton,
-    cart    : CartSkeleton
+    cart    : CartSkeleton,
+    table   : TableSkeleton,
 }
 
 const Loading = ({ status, error, children, type = "category" }: LoadingProps) => {

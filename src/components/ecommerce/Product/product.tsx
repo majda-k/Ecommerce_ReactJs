@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { addToCart } from "@store/cart/cartSlice";
 import { useState, useEffect, memo } from "react";
@@ -7,8 +7,8 @@ import type { TProduct } from "@/types/Product";
 import Like from "@assets/LIke.svg";
 import LikeFill from "@assets/LikeFill.svg";
 import styles from "./styles.module.css";
-
 import actLikeToggle from "@store/wishLIst/act/actLikeToggle";
+import ProductInfo from "@components/ProductInfo/ProductInfo";
 
 
 
@@ -24,10 +24,13 @@ interface IProps {
 
 }
 
-export default memo(function Product ({ id, title, price, img, cat_prefix, max, quantity , isLiked }: TProduct ) {
+export default memo(function Product ({ id, title, price, img,  max, quantity , isLiked , isAuthenticated }: TProduct & { isAuthenticated: boolean } ) {
 
 
     const dispatch = useAppDispatch();
+
+
+    const [showModal, setShowModal] = useState(false);
 
     const[wishListLoading , setWishListLoading] = useState(false);
 
@@ -58,31 +61,62 @@ export default memo(function Product ({ id, title, price, img, cat_prefix, max, 
     }, [isBtnClicked]);
 
     const handleLikeToggle = (id: number) => {
-        if(!wishListLoading){
-            setWishListLoading(true);
-            dispatch(actLikeToggle(id))
-            .unwrap()
-            .then(() => {
-                setWishListLoading(false);
-            })
-            .catch(() => {
-                setWishListLoading(false);
-            });
+        if(isAuthenticated){
+            if(!wishListLoading){
+                setWishListLoading(true);
+                dispatch(actLikeToggle(id))
+                .unwrap()
+                .then(() => {
+                    setWishListLoading(false);
+                })
+                .catch(() => {
+                    setWishListLoading(false);
+                });
+            }
+        }else{
+            setShowModal(true);
         }
+    
     }
 
 
+
     return (
-        <div className={styles.productContainer}>
+        <>
+        {/* <div
+      className="modal show"    
+      style={{ display: 'block', position: 'absolute' , margin: '15%' , zIndex: 1000 , width: '70%' , height: '100%' }} 
+      onHide={() => setShowModal(false)}
+   
+    > */}
+    <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal.Dialog >
+        <Modal.Body className="text-center mx-auto" >
+          <p>You need to be logged in to add products to your wish list.</p>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+      </Modal>
+
+    <div className={styles.productContainer}>
+        <ProductInfo title={title} price={price} img={img} direction="row" >
             <div className={styles.WisheListContainer}>
                 {wishListLoading ? <Spinner animation="border" size="sm" /> : <img src={isLiked ? LikeFill : Like} alt="Like" onClick={() => handleLikeToggle(id)} />}
                
             </div>
-            <img src={img} alt="photo" className={styles.productImg} />
-            <h1 className=" mt-2 fs-5">{title}</h1>
-            <p>{price} EGP</p>
+            
             <p className="text-danger">{quatityProduct ? "Out of stock" : `In stock ${currentRemainningQuantity} item(s)`}</p>
+            
+           
             <Button className="btn-primary" onClick={handleClick} disabled={isBtnnDisabled} > {isBtnnDisabled ? <><Spinner animation="border" size="sm" />Loading ... </> : "Add to Cart"} </Button>
+        
+      
+        </ProductInfo>
+
         </div>
+        </>
     )
-})
+});

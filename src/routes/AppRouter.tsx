@@ -16,9 +16,10 @@ const Login = lazy(() => import('@pages/Login'));
 const Register = lazy(() => import('@pages/Register'));
 const Cart = lazy(() => import('@pages/Cart'));
 const WishList = lazy(() => import('@pages/wishList'));
-
-
-
+const Account = lazy(() => import('@pages/Account'));
+const ProtectedRoute = lazy(() => import('@components/Auth/ProtectedRoute'));
+const ProfileLayout = lazy(() => import('@layouts/ProfileLayout/ProfileLayout'));
+const Orders = lazy(() => import('@pages/Orders'));
 const router = createBrowserRouter([
     {
         path: '/',
@@ -70,7 +71,21 @@ const router = createBrowserRouter([
             },
             {
                 path: 'wishList',
-                element: <Suspense fallback={<ProductSkeleton/>}><WishList /></Suspense>
+                element: <ProtectedRoute><Suspense fallback={<ProductSkeleton/>}><WishList /></Suspense></ProtectedRoute>
+            },
+            {
+                path: 'profile',
+                element: <ProtectedRoute><Suspense fallback={<LottieHandler type="loading" message="Loading , Please wait..." />}>
+                    <ProfileLayout/></Suspense></ProtectedRoute>,
+                    children: [
+                        {
+                            index: true,
+                            element: <Suspense fallback={<LottieHandler type="loading" message="Loading , Please wait..." />}><Account /></Suspense>
+                        },
+                        {
+                            path: 'orders',
+                            element: <Suspense fallback={<LottieHandler type="loading" message="Loading , Please wait..." />}><Orders /></Suspense>
+                        }]
             }
         ]
     },

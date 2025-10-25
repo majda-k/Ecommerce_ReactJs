@@ -1,40 +1,20 @@
-import { useForm, type SubmitHandler } from "react-hook-form"
-import { Col, Form, FormText, Row } from "react-bootstrap";
+
+import { Col, Form, FormText, Row, Spinner } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { type TRegisterForm, zodSchema } from "@validations/schemaRegister";
-import useCheckEmailAvailability from "@hooks/UseCheckEmailAvailability";
+import { Navigate} from "react-router-dom";
+import useRegister from "@hooks/useRegister";
+
 
 
 
 
 export default function Register() {
-    const { register, handleSubmit, formState: { errors }, trigger, getFieldState } = useForm<TRegisterForm>({
-        mode: "onBlur",
-        resolver: zodResolver(zodSchema),
-    });
+    const {register , handleSubmit , formState: {errors} , submitHandler , checkEmailAvailabilityStatus , accessToken , emailOnBlurHandler , loading , error ,
+     enteredEmail , checkEmailAvailability, resetCheckEmailAvailability} = useRegister();
 
-    const submitHandler: SubmitHandler<TRegisterForm> = (data: TRegisterForm) => {
-        console.log(data);
-    }
-
-    const { checkEmailAvailabilityStatus, enteredEmail, checkEmailAvailability, resetCheckEmailAvailability } = useCheckEmailAvailability();
-
-    const emailOnBlurHandler =
-        async (e: React.FocusEvent<HTMLInputElement>) => {
-            await trigger("email");
-            const value = e.target.value;
-            const { isDirty, invalid } = getFieldState("email")
-            if (isDirty && !invalid && enteredEmail !== value) {
-                checkEmailAvailability(value);
-
-            }
-
-            if (isDirty && !invalid && enteredEmail) {
-                resetCheckEmailAvailability();
-            };
-
-        };
+        if(accessToken){
+            return <Navigate to="/" />;
+          }
 
     return (
         <>
@@ -91,8 +71,12 @@ export default function Register() {
                             <Form.Control type="password" {...register("confirmPassword")} isInvalid={errors.confirmPassword?.message ? true : false} />
                             <Form.Control.Feedback type="invalid">{errors.confirmPassword?.message}</Form.Control.Feedback>
                         </Form.Group>
-                        <Button type="submit" variant="info" style={{ color: 'white' }} disabled={checkEmailAvailabilityStatus === "checking" ? true : false}>Submit</Button>
+                        <Button type="submit" variant="info" style={{ color: 'white' }} disabled={checkEmailAvailabilityStatus === "checking" ? true : false || loading === "pending" ? true : false}>Submit</Button>
+                        <>{loading === "pending" && <Spinner animation="border" size="sm" role="status"><span className="visually-hidden">Loading...</span></Spinner>}
+                        </>
+                        {error && <div className="alert alert-danger mt-3">{error}</div>}
                     </Form>
+
                 </Col>
             </Row>
 

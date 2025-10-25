@@ -19,7 +19,7 @@ const Products = () => {
             <div className="d-flex justify-content-center align-items-center mb-5 ">
                 <h1><span>{params.prefix} <span>Products</span></span></h1>
             </div>
-            <GridList<TProduct> records={productFullInfo} gridItem={(record) => <Product {...record} />} />
+            <GridList<TProduct> records={productFullInfo} emptyMessage="No products found" gridItem={(record) => <Product {...record} />} />
         </Container>
     )
 }

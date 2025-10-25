@@ -16,7 +16,7 @@ interface Cart {
 const initialState: Cart = {
     items: {},
     ProductFullInfo: [],
-    loading : "idle",
+    loading: "idle",
     error: null,
 
 }
@@ -34,23 +34,32 @@ const CartSlice = createSlice({
             }
         },
 
-       cartItemChangeQunatityHandler : (state , action) =>{
+        cartItemChangeQunatityHandler: (state, action) => {
             state.items[action.payload.id] = action.payload.quantity;
         },
 
 
-        cartItemRemoveHandler  : (state , action) =>{
+        cartItemRemoveHandler: (state, action) => {
             delete state.items[action.payload.id];
 
             state.ProductFullInfo = state.ProductFullInfo.filter((el) => el.id !== action.payload.id);
 
         },
- 
-        CleanCartProductFullInfo : (state) => {
-            state.ProductFullInfo = [];
-        }
 
-        
+        CleanCartProductFullInfo: (state) => {
+            state.ProductFullInfo = [];
+        },
+
+        clearCartAfterPlaceOrderHandler: (state) => {
+            state.items = {};
+            state.ProductFullInfo = [];
+        },
+
+        resetCartAfterPlaceOrderHandler: (state) => {
+            state.loading = "idle";
+        },
+
+
     },
 
     extraReducers: (builder) => {
@@ -58,16 +67,16 @@ const CartSlice = createSlice({
             state.loading = "pending";
             state.error = null;
         });
-    
+
         builder.addCase(actGetProductsByItems.actGetProductsByItems.fulfilled, (state, action) => {
             state.loading = "succeeded";
             state.ProductFullInfo = action.payload;
         });
-    
+
         builder.addCase(actGetProductsByItems.actGetProductsByItems.rejected, (state, action) => {
             state.loading = "failed";
-            if(isString(action.payload)){
-            state.error = action.payload ;
+            if (isString(action.payload)) {
+                state.error = action.payload;
             }
         });
     }
@@ -78,6 +87,6 @@ const CartSlice = createSlice({
 
 
 
-export const { addToCart , cartItemChangeQunatityHandler , cartItemRemoveHandler , CleanCartProductFullInfo } = CartSlice.actions;
+export const { addToCart, cartItemChangeQunatityHandler, cartItemRemoveHandler, CleanCartProductFullInfo, clearCartAfterPlaceOrderHandler, resetCartAfterPlaceOrderHandler } = CartSlice.actions;
 export default CartSlice.reducer;
 export { actGetProductsByItems };
